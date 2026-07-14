@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+:root {
+  --color-paper: #f4ecd8;
+  --color-paper-2: #ede1c7;
+  --color-cork: #c8a165;
+  --color-cork-dark: #a9824e;
+  --color-ink: #362e26;
+  --color-rust: #a6472e;
+  --color-pine: #2f5d50;
+}
+
+@theme inline {
+  --color-paper: var(--color-paper);
+  --color-ink: var(--color-ink);
+  --color-cork: var(--color-cork);
+  --color-rust: var(--color-rust);
+  --color-pine: var(--color-pine);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-handwritten: var(--font-handwritten);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-cork);
+  color: var(--color-ink);
+  font-family: var(--font-body), Georgia, serif;
+}
+
+/* A soft corkboard backdrop behind the whole app: warm wood tone, faint
+   fleck texture, and a subtle vignette so it doesn't feel flat. */
+.corkboard {
+  background-color: var(--color-cork);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.07) 0, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(0, 0, 0, 0.12) 0, transparent 50%),
+    repeating-radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.03) 0, transparent 2px),
+    linear-gradient(180deg, var(--color-cork) 0%, var(--color-cork-dark) 100%);
+  background-attachment: fixed;
+}
+
+/* Paper texture used behind headers/cards: warm cream with a faint grain. */
+.bg-paper {
+  background-color: var(--color-paper);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(54, 46, 38, 0.025) 0px,
+      rgba(54, 46, 38, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+
+/* A note pinned to the board: paper card, faint shadow, tiny "pin" at top. */
+.note-card {
+  position: relative;
+  background-color: var(--color-paper);
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(54, 46, 38, 0.03) 0px,
+    rgba(54, 46, 38, 0.03) 1px,
+    transparent 1px,
+    transparent 28px
+  );
+  border: 1px solid rgba(54, 46, 38, 0.12);
+  border-radius: 2px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.12),
+    0 8px 20px -10px rgba(0, 0, 0, 0.35);
+  padding: 1.1rem 1.25rem 1.25rem;
+}
+
+.note-card::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e2836b, var(--color-rust) 70%);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* A little photo pinned like a polaroid, for daily-photo posts. */
+.polaroid {
+  background-color: #fffdf8;
+  border: 1px solid rgba(54, 46, 38, 0.12);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.15),
+    0 10px 22px -10px rgba(0, 0, 0, 0.45);
+  padding: 0.75rem 0.75rem 1rem;
+}
+
+::selection {
+  background: var(--color-rust);
+  color: var(--color-paper);
+}
