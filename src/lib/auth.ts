@@ -8,10 +8,21 @@ import { auth, currentUser } from "@clerk/nextjs/server";
  * accounts, this makes sure only the email addresses listed in
  * ALLOWED_EMAILS can ever see the board.
  */
+function normalizeEmail(raw: string): string {
+  return raw
+    .trim()
+    // Strip wrapping quotes, e.g. from ALLOWED_EMAILS="a@x.com,b@x.com"
+    // being pasted into a dashboard field with the quotes left in.
+    .replace(/^["']|["']$/g, "")
+    .trim()
+    .toLowerCase();
+}
+
 function allowedEmails(): string[] {
   return (process.env.ALLOWED_EMAILS ?? "")
-    .split(",")
-    .map((email) => email.trim().toLowerCase())
+    // Accept commas, semicolons, or newlines as separators.
+    .split(/[,;\n]/)
+    .map(normalizeEmail)
     .filter(Boolean);
 }
 
@@ -43,8 +54,11 @@ export async function requireAllowedUser() {
   if (!user) redirect("/sign-in");
 
   const allowed = allowedEmails();
-  const email = user.primaryEmailAddress?.emailAddress.toLowerCase();
-  if (allowed.length > 0 && (!email || !allowed.includes(email))) {
+  // Check every email on the account, not just whichever one is marked
+  // primary - someone can be invited at an address that isn't primary.
+  const userEmails = user.emailAddresses.map((e) => normalizeEmail(e.emailAddress));
+  const isAllowed = allowed.length === 0 || userEmails.some((e) => allowed.includes(e));
+  if (!isAllowed) {
     redirect("/not-authorized");
   }
 
