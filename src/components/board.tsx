@@ -51,7 +51,7 @@ export function Board({
           </p>
         )}
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
+          <PostCard key={post.id} post={post} currentUserName={currentUserName} />
         ))}
       </div>
     </div>

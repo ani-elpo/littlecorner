@@ -1,5 +1,7 @@
 import { format } from "date-fns";
 import { publicMediaUrl } from "@/lib/media";
+import { ReactionsBar } from "@/components/reactions-bar";
+import { ReplyThread } from "@/components/reply-thread";
 import type { Post } from "@/lib/types";
 
 function Timestamp({ iso }: { iso: string }) {
@@ -49,7 +51,13 @@ function tiltFor(id: string): string {
   return TILTS[Math.abs(hash) % TILTS.length];
 }
 
-export function PostCard({ post }: { post: Post }) {
+export function PostCard({
+  post,
+  currentUserName,
+}: {
+  post: Post;
+  currentUserName: string;
+}) {
   if (post.type === "daily_photo") {
     const photo = post.media[0];
     return (
@@ -68,6 +76,8 @@ export function PostCard({ post }: { post: Post }) {
         <div className="mt-2 flex justify-end">
           <Timestamp iso={post.created_at} />
         </div>
+        <ReactionsBar postId={post.id} />
+        <ReplyThread postId={post.id} authorName={currentUserName} />
       </article>
     );
   }
@@ -103,6 +113,9 @@ export function PostCard({ post }: { post: Post }) {
           className="mt-3 w-full"
         />
       )}
+
+      <ReactionsBar postId={post.id} />
+      <ReplyThread postId={post.id} authorName={currentUserName} />
     </article>
   );
 }
