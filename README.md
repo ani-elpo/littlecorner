@@ -92,6 +92,10 @@ per-project Clerk configuration beyond the app itself.
    `photo_pool` tables, turns on Row Level Security, adds `posts` to the
    realtime publication, and creates the public `board-media` storage
    bucket.
+3. Then run `supabase/migrations/0002_replies_reactions.sql` the same way.
+   This adds the `replies` and `reactions` tables (purely additive - it
+   doesn't touch `posts`), with the same RLS-read/service-role-write and
+   realtime pattern as everything else.
 3. Copy your keys from *Project Settings → API*:
    - `NEXT_PUBLIC_SUPABASE_URL` / `SUPABASE_URL` (same value)
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
